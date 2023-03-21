@@ -1,0 +1,10 @@
+/venv
+
+# Ignore kredo information
+.env
+
+# Ignore a logger.log file
+/task1/logger.log
+
+# Ignore results folder with answer by queries
+/task1/results
