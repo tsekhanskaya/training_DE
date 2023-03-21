@@ -16,11 +16,9 @@ class Main:
             print("\nThis application can write data from files to a database with a specific structure.\n"
                   "This application knows 4 types of request. Query result will be in the JSON.\n")
             print("Please input correct path to rooms.json!\n")
-            self.rooms_path = "/home/hanna/Downloads/Materials (2)/Task 1. Python/rooms.json"
-            # self.rooms_path = input()
+            self.rooms_path = input()
             print("Please input correct path to students.json!\n")
-            self.students_path = "/home/hanna/Downloads/Materials (2)/Task 1. Python/students.json"
-            # self.students_path = input()
+            self.students_path = input()
             self.data = Database()
         except Exception as e:
             logging.exception(e)
