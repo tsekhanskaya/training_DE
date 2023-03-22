@@ -4,8 +4,6 @@ import psycopg2
 import logging
 import os
 
-from task1.classes.file import File
-
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -24,11 +22,12 @@ class Database:
             self.cursor = self.conn.cursor()
             logging.info('Created the cursor object')
 
-            query_files = ['create_table_rooms.sql', 'create_table_students.sql']
+            query_files = ['create_table_rooms.sql', 'create_table_students.sql', 'indexes.sql']
             for query_file in query_files:
                 query_create_table = self.query_string(query_file)
                 self.cursor.execute(query_create_table)
                 logging.info(f' {query_file} created successfully')
+                print(f' {query_file} created successfully')
 
             logging.info('Database class instance successfully created!')
         except Exception as e:
@@ -99,6 +98,7 @@ class Database:
         absolute_file_path = os.path.join(current_dir, relative_path)
         with open(absolute_file_path, 'r') as f:
             query = f.read()
+        print(f"{absolute_file_path} has been read!")
         return query
 
     def result(self, query_filename: str, format_result_file: str) -> None:
@@ -115,9 +115,7 @@ class Database:
             if not os.path.exists('results'):
                 os.makedirs('results')
             output_file = f"result_{filename_without_extension}.{format_result_file}"
-            # output_file = os.path.join("results", f"result_{filename_without_extension}.{format_result_file}")
 
-            # print(output_file)
             if format_result_file == 'json':
                 self.response_json(results, output_file)
             elif format_result_file == 'xml':
