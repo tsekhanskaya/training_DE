@@ -6,6 +6,38 @@ from task1.classes.file import File
 
 
 class Main:
+    """
+   class Main(builtins.object).
+   Basic operation of a console application
+
+   Methods defined here:
+
+   __init__(self)
+       Initialize self.  See help(type(self)) for accurate signature.
+
+   work(self) -> None
+       Basic work with queries for data processing.
+       :return: None
+
+   Methods defined here:
+
+   __init__(self)
+       Initialize self.  See help(type(self)) for accurate signature.
+
+   work(self) -> None
+       Basic work with queries for data processing.
+       :return: None
+
+   ----------------------------------------------------------------------
+   Data descriptors defined here:
+
+   __dict__
+       dictionary for instance variables (if defined)
+
+   __weakref__
+       list of weak references to the object (if defined)
+
+    """
     def __init__(self):
         try:
             if os.path.exists('logger.log'):
@@ -60,18 +92,6 @@ class Main:
                 logging.error("No format selected.")
                 continue
 
-            filename = Main.select_filename(number)
+            filename = f"select_{number}.sql"
             self.data.result(filename, format_file)
         self.data.disconnection()
-
-    @staticmethod
-    def select_filename(num: int) -> str:
-        """
-        Create query filename"
-        :param num: int
-        :return: str
-        """
-        try:
-            return f"select_{num}.sql"
-        except Exception as e:
-            logging.exception(e)

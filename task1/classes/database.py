@@ -11,6 +11,74 @@ load_dotenv()
 
 
 class Database:
+    """
+    class Database(builtins.object).
+    The class allows you to connect and disconnect to the database.
+    Writes data from previously processed rooms.json and students.json.
+    Executes database queries.
+
+   Methods defined here:
+
+   __init__(self)
+       Initialize self.  See help(type(self)) for accurate signature.
+
+   disconnection(self) -> None
+       Disconnection database
+       :return: None
+
+   response_json(self, results: list, output_file: str, description) -> None
+       The query result is written to a result_{filename_query}.json.
+       :param output_file: str
+       :param results: list
+       :return: None
+
+   response_xml(self, results: list, output_file: str, description) -> None
+       The query result is written to a result_{filename_query}.xml.
+       :param output_file: str
+       :param results: list
+       :return: None
+
+   result(self, query_filename: str, format_result_file: str) -> None
+       :param query_filename: str
+       :param format_result_file: str
+       :return: None
+
+   write_rooms(self, rooms: list) -> None
+       Writes the list of rooms in the current database to the rooms table
+       :param rooms: list
+       :return: None
+
+   write_students(self, students: list) -> None
+       Writes the list of students in the current database to the students table
+       :param students: list
+       :return: None
+
+   ----------------------------------------------------------------------
+   Static methods defined here:
+
+   query_string(query_file: str) -> str
+       Getting the text of the request.
+       :param query_file: str        :return: str
+
+   ----------------------------------------------------------------------
+   Readonly properties defined here:
+
+   connection
+
+   ----------------------------------------------------------------------
+   Data descriptors defined here:
+
+   __dict__
+       dictionary for instance variables (if defined)
+
+   __weakref__
+       list of weak references to the object (if defined)
+
+   ----------------------------------------------------------------------
+   Data and other attributes defined here:
+
+   __annotations__ = {'_connection': typing.Union[connect, NoneType]}
+    """
 
     _connection: typing.Union[psycopg2.connect, None] = None
 
@@ -29,7 +97,6 @@ class Database:
 
     def __init__(self):
         try:
-
             query_files = ['create_table_rooms.sql', 'create_table_students.sql', 'indexes.sql']
             for query_file in query_files:
                 query_create_table = self.query_string(query_file)
