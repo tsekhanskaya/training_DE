@@ -1,24 +1,46 @@
 import logging
 import os
+import click
 
 from task1.classes.database import Database
 from task1.classes.file import File
 
 
 class Main:
+    """
+
+    class Main(builtins.object). Basic operation of a console application
+
+   Methods defined here:
+   
+   __init__(self)
+       Initialize self.  See help(type(self)) for accurate signature.
+   
+   work(self) -> None
+       Basic work with queries for data processing.
+       :return: None
+   
+   ----------------------------------------------------------------------
+   Data descriptors defined here:
+   
+   __dict__
+       dictionary for instance variables (if defined)
+   
+   __weakref__
+       list of weak references to the object (if defined)
+
+    """
     def __init__(self):
         try:
             if os.path.exists('logger.log'):
                 os.remove('logger.log')
             logging.basicConfig(filename='logger.log',
                                 level=logging.INFO,
-                                format="%(asctime)s - %(levelname)s - %(funcName)s: %(lineno)d - %(message)s")
-            print("\nThis application can write data from files to a database with a specific structure.\n"
-                  "This application knows 4 types of request. Query result will be in the JSON.\n")
-            print("Please input correct path to rooms.json!\n")
-            self.rooms_path = input()
-            print("Please input correct path to students.json!\n")
-            self.students_path = input()
+                                format='%(asctime)s - %(levelname)s - %(funcName)s: %(lineno)d - %(message)s')
+            click.echo('This application can write data from files to a database with a specific structure.\n'
+                       'This application knows 4 types of request. Query result will be in the JSON.\n')
+            self.rooms_path = click.prompt('Please input correct path to rooms.json!', type=str)
+            self.students_path = click.prompt('Please input correct path to students.json!', type=str)
             self.data = Database()
         except Exception as e:
             logging.exception(e)
@@ -35,43 +57,22 @@ class Main:
         self.data.write_students(list_students)  # Write student data to students table
 
         while True:
-            print('Queries:\n'
-                  '1 - List of rooms and number of students in each room\n'
-                  '2 - 5 rooms with the smallest average age of students\n'
-                  '3 - 5 rooms with the biggest difference in student age\n'
-                  '4 - List of rooms where students of different sexes live\n'
-                  '5 - Quit\n'
-                  'Choose one:')
-            number = int(input())
+            click.echo('Queries:\n'
+                       '1 - List of rooms and number of students in each room\n'
+                       '2 - 5 rooms with the smallest average age of students\n'
+                       '3 - 5 rooms with the biggest difference in student age\n'
+                       '4 - List of rooms where students of different sexes live\n'
+                       '5 - Quit\n')
+            number = click.prompt('Choose one', type=click.IntRange(1, 5))
 
-            if number not in [1, 2, 3, 4, 5]:
-                logging.info("Didn't choose correct number of query...")
-                continue
             if number == 5:
-                logging.info("Quit!")
+                click.echo('Quit!')
+                logging.info('Quit!')
                 break
 
-            print('Select the format of the query result record file:\n'
-                  'json\n'
-                  'xml')
-            format_file = input()
+            format_file = click.prompt('Enter the file format for writing query results',
+                                       type=click.Choice(['json', 'xml']))
 
-            if format_file not in ["json", "xml"]:
-                logging.error("No format selected.")
-                continue
-
-            filename = Main.select_filename(number)
+            filename = f'select_{number}.sql'
             self.data.result(filename, format_file)
         self.data.disconnection()
-
-    @staticmethod
-    def select_filename(num: int) -> str:
-        """
-        Create query filename"
-        :param num: int
-        :return: str
-        """
-        try:
-            return f"select_{num}.sql"
-        except Exception as e:
-            logging.exception(e)
