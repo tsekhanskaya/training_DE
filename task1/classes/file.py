@@ -40,7 +40,6 @@ class File:
         Open rooms.json. Parser data to rooms(:list)
         :return: list
         """
-
         with open(self.rooms_file_path, 'r') as f:
             rooms = json.load(f)
         return rooms

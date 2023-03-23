@@ -4,6 +4,7 @@ import psycopg2
 import logging
 import typing
 import os
+import click
 
 from dotenv import load_dotenv
 
@@ -26,14 +27,16 @@ class Database:
        Disconnection database
        :return: None
 
-   response_json(self, results: list, output_file: str, description) -> None
+   response_json(self, results: list, output_file: str, description: str) -> None
        The query result is written to a result_{filename_query}.json.
+       :param description: str
        :param output_file: str
        :param results: list
        :return: None
 
-   response_xml(self, results: list, output_file: str, description) -> None
+   response_xml(self, results: list, output_file: str, description: str) -> None
        The query result is written to a result_{filename_query}.xml.
+       :param description: str
        :param output_file: str
        :param results: list
        :return: None
@@ -104,8 +107,8 @@ class Database:
                     cursor.execute(query_create_table)
                 self.connection.commit()
 
-                logging.info(f' {query_file} created successfully')
-                print(f' {query_file} created successfully')
+                logging.info(f' {query_file} was execute successfully!')
+                click.echo(f' {query_file} was execute successfully!')
 
             logging.info('Database class instance successfully created!')
         except Exception as e:
@@ -140,7 +143,7 @@ class Database:
                 )
                 self.connection.commit()
                 inserted_count = cursor.rowcount
-            print(f"{inserted_count} students were uploaded successfully!")
+            click.echo(f"{inserted_count} students were uploaded successfully!")
             logging.info(f'{inserted_count} students uploaded to students table!')
         except Exception as e:
             self.connection.rollback()
@@ -161,7 +164,8 @@ class Database:
                 )
                 self.connection.commit()
                 inserted_count = cursor.rowcount
-                print(f"{inserted_count} rooms were uploaded!")
+            click.echo(f"{inserted_count} rooms were uploaded successfully!")
+            logging.info(f'{inserted_count} rooms uploaded to students table!')
         except Exception as e:
             self.connection.rollback()
             logging.exception(e)
@@ -177,7 +181,7 @@ class Database:
         absolute_file_path = os.path.join(current_dir, relative_path)
         with open(absolute_file_path, 'r') as f:
             query = f.read()
-        print(f"{absolute_file_path} has been read!")
+        click.echo(f"{query_file} has been read!")
         return query
 
     def result(self, query_filename: str, format_result_file: str) -> None:
@@ -204,9 +208,10 @@ class Database:
         except Exception as e:
             logging.exception(e)
 
-    def response_json(self, results: list, output_file: str, description) -> None:
+    def response_json(self, results: list, output_file: str, description: str) -> None:
         """
         The query result is written to a result_{filename_query}.json.
+        :param description: str
         :param output_file: str
         :param results: list
         :return: None
@@ -219,12 +224,14 @@ class Database:
                     rows.append(dict(zip([column[0] for column in description], row)))
                 json.dump(rows, f, indent=1)
             logging.info(f"The result was successfully written to a {output_file}!")
+            click.echo(f"The result was successfully written to a {output_file}!")
         except Exception as e:
             logging.exception(e)
 
-    def response_xml(self, results: list, output_file: str, description) -> None:
+    def response_xml(self, results: list, output_file: str, description: str) -> None:
         """
         The query result is written to a result_{filename_query}.xml.
+        :param description: str
         :param output_file: str
         :param results: list
         :return: None
@@ -242,6 +249,6 @@ class Database:
             tree = ET.ElementTree(root)
             tree.write(output_path, encoding='utf-8', xml_declaration=True)
             logging.info(f"The result was successfully written to a {output_file}!")
-            print(f"The result was successfully written to a {output_file}!")
+            click.echo(f"The result was successfully written to a {output_file}!")
         except Exception as e:
             logging.exception(e)
