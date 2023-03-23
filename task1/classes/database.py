@@ -19,8 +19,8 @@ class Database:
         if self._connection is None:
             try:
                 type(self)._connection = psycopg2.connect(
-                    host='localhost',
-                    database='training',
+                    host=os.getenv('DATABASE_HOST'),
+                    database=os.getenv('DATABASE_NAME'),
                     user=os.getenv('DATABASE_USER'),
                     password=os.getenv('DATABASE_PASSWORD'))
             except Exception as e:
