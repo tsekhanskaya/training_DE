@@ -1,5 +1,5 @@
 /.idea
-/task1/classes/__pycache__
+__pycache__/
 /venv
 
 # Ignore kredo information
