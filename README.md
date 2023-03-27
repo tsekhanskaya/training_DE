@@ -9,6 +9,7 @@ psql (PostgreSQL) 15.2
 Сontains the following tasks:
 
 * [TASK1](task1/README_task1.md)
+* [TASK2](task2/README_task2.md)
 ---
 ## Requirements
 The following requirements must be met in order to run the project:
