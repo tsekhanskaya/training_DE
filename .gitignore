@@ -17,3 +17,6 @@ __pycache__/
 # temp files
 /task2/temp_numpy.py
 /task2/temp_pandas.py
+
+copy_assignment_numpy.ipynb
+copy_assignment_pandas.ipynb
