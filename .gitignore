@@ -1,12 +1,17 @@
 /.idea
 __pycache__/
-/venv
 
-# Ignore kredo information
+# Environments
 .env
+/venv
 
 # Ignore a logger.log file
 /task1/logger.log
 
 # Ignore results folder with answer by queries
 /task1/results
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+/task2/temp_numpy.py
