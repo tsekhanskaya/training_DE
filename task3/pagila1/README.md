@@ -64,23 +64,6 @@ Default Password: root
 The payment table is designed as a partitioned table with a 7 month timespan
 for the date ranges.
 
-## INSTALL NOTE
-
-The pagila-data.sql file and the pagila-insert-data.sql both contain the same
-data, the former using COPY commands, the latter using INSERT commands, so you
-only need to install one of them. Both formats are provided for those who have
-trouble using one version or another, and for instructors who want to point out
-the longer data loading time with the latter. You can load them via psql, pgAdmin, etc.
-
-Since JSONB data is quite large to store on Github, the backup is not a plain SQL
-file. You can still use psql/pgAdmin, etc. to load pagila-schema-jsonb.sql, however
-please use pg_restore to load jsonb data files:
-
-```
-pg_restore /usr/share/pagila/pagila-data-yum-jsonb.sql -U postgres -d pagila
-pg_restore /usr/share/pagila/pagila-data-apt-jsonb.sql -U postgres -d pagila
-```
-
 ## VERSION HISTORY
 
 Version 3.0.0
@@ -216,7 +199,13 @@ pagila=#
 ```
 docker-compose up
 ```
-
+Added .env.
+```
+DATABASE_HOST=
+DATABASE_NAME=pagila
+DATABASE_USER=postgres
+DATABASE_PASSWORD=
+```
 2. Done! Just use:
 
 ```
