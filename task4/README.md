@@ -1,5 +1,9 @@
 <h1 align="center">Spark Demo Course</h1>
 
+## Docker
+
+1. ```docker pull jupyter/all-spark-notebook```
+2. ```docker run -p 8888:8888 jupyter/all-spark-notebook```
 
 ## Description
 
