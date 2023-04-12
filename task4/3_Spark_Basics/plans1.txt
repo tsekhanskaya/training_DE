@@ -1,0 +1,53 @@
+== Parsed Logical Plan ==
+'Union false, false
+:- Project [rank#44, name#45, net_worth#195, bday#47, age#48, nationality#381]
+:  +- Filter isnotnull(age#48)
+:     +- Join Inner, (nationality#381 = country#300)
+:        :- Project [rank#44, name#45, net_worth#195, bday#47, age#48, CASE WHEN (nationality#49 = United States of America) THEN United States WHEN (nationality#49 = French) THEN France WHEN (nationality#49 = England) THEN United Kingdom ELSE nationality#49 END AS nationality#381]
+:        :  +- Filter (net_worth#195 > 60)
+:        :     +- Project [rank#44, name#45, cast(regexp_extract(net_worth#46, ^\$(\d+).*$, 1) as int) AS net_worth#195, bday#47, age#48, nationality#49]
+:        :        +- Relation [rank#44,name#45,net_worth#46,bday#47,age#48,nationality#49] csv
+:        +- Relation [country#300,num_billionares#301,billionaire_per_million#302] csv
++- Filter (nationality#570 = Russia)
+   +- Relation [rank#565,name#566,net_worth#567,bday#568,age#569,nationality#570] parquet
+
+== Analyzed Logical Plan ==
+rank: int, name: string, net_worth: string, bday: string, age: int, nationality: string
+Union false, false
+:- Project [rank#44, name#45, cast(net_worth#195 as string) AS net_worth#675, bday#47, age#48, nationality#381]
+:  +- Project [rank#44, name#45, net_worth#195, bday#47, age#48, nationality#381]
+:     +- Filter isnotnull(age#48)
+:        +- Join Inner, (nationality#381 = country#300)
+:           :- Project [rank#44, name#45, net_worth#195, bday#47, age#48, CASE WHEN (nationality#49 = United States of America) THEN United States WHEN (nationality#49 = French) THEN France WHEN (nationality#49 = England) THEN United Kingdom ELSE nationality#49 END AS nationality#381]
+:           :  +- Filter (net_worth#195 > 60)
+:           :     +- Project [rank#44, name#45, cast(regexp_extract(net_worth#46, ^\$(\d+).*$, 1) as int) AS net_worth#195, bday#47, age#48, nationality#49]
+:           :        +- Relation [rank#44,name#45,net_worth#46,bday#47,age#48,nationality#49] csv
+:           +- Relation [country#300,num_billionares#301,billionaire_per_million#302] csv
++- Filter (nationality#570 = Russia)
+   +- Relation [rank#565,name#566,net_worth#567,bday#568,age#569,nationality#570] parquet
+
+== Optimized Logical Plan ==
+Union false, false
+:- Project [rank#44, name#45, cast(net_worth#195 as string) AS net_worth#675, bday#47, age#48, nationality#381]
+:  +- Join Inner, (nationality#381 = country#300)
+:     :- Project [rank#44, name#45, cast(regexp_extract(net_worth#46, ^\$(\d+).*$, 1) as int) AS net_worth#195, bday#47, age#48, CASE WHEN (nationality#49 = United States of America) THEN United States WHEN (nationality#49 = French) THEN France WHEN (nationality#49 = England) THEN United Kingdom ELSE nationality#49 END AS nationality#381]
+:     :  +- Filter ((isnotnull(net_worth#46) AND ((cast(regexp_extract(net_worth#46, ^\$(\d+).*$, 1) as int) > 60) AND isnotnull(age#48))) AND CASE WHEN (nationality#49 = United States of America) THEN true WHEN (nationality#49 = French) THEN true WHEN (nationality#49 = England) THEN true ELSE isnotnull(nationality#49) END)
+:     :     +- Relation [rank#44,name#45,net_worth#46,bday#47,age#48,nationality#49] csv
+:     +- Project [country#300]
+:        +- Filter isnotnull(country#300)
+:           +- Relation [country#300,num_billionares#301,billionaire_per_million#302] csv
++- Filter (isnotnull(nationality#570) AND (nationality#570 = Russia))
+   +- Relation [rank#565,name#566,net_worth#567,bday#568,age#569,nationality#570] parquet
+
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- Union
+   :- Project [rank#44, name#45, cast(net_worth#195 as string) AS net_worth#675, bday#47, age#48, nationality#381]
+   :  +- BroadcastHashJoin [nationality#381], [country#300], Inner, BuildRight, false
+   :     :- Project [rank#44, name#45, cast(regexp_extract(net_worth#46, ^\$(\d+).*$, 1) as int) AS net_worth#195, bday#47, age#48, CASE WHEN (nationality#49 = United States of America) THEN United States WHEN (nationality#49 = French) THEN France WHEN (nationality#49 = England) THEN United Kingdom ELSE nationality#49 END AS nationality#381]
+   :     :  +- Filter (((isnotnull(net_worth#46) AND (cast(regexp_extract(net_worth#46, ^\$(\d+).*$, 1) as int) > 60)) AND isnotnull(age#48)) AND CASE WHEN (nationality#49 = United States of America) THEN true WHEN (nationality#49 = French) THEN true WHEN (nationality#49 = England) THEN true ELSE isnotnull(nationality#49) END)
+   :     :     +- FileScan csv [rank#44,name#45,net_worth#46,bday#47,age#48,nationality#49] Batched: false, DataFilters: [isnotnull(net_worth#46), (cast(regexp_extract(net_worth#46, ^\$(\d+).*$, 1) as int) > 60), isnot..., Format: CSV, Location: InMemoryFileIndex(1 paths)[file:/home/jovyan/3_Spark_Basics/data/top_100_richest.csv], PartitionFilters: [], PushedFilters: [IsNotNull(net_worth), IsNotNull(age)], ReadSchema: struct<rank:int,name:string,net_worth:string,bday:string,age:int,nationality:string>
+   :     +- BroadcastExchange HashedRelationBroadcastMode(List(input[0, string, false]),false), [plan_id=1443]
+   :        +- Filter isnotnull(country#300)
+   :           +- FileScan csv [country#300] Batched: false, DataFilters: [isnotnull(country#300)], Format: CSV, Location: InMemoryFileIndex(1 paths)[file:/home/jovyan/3_Spark_Basics/data/wiki_number_of_billionaires.csv], PartitionFilters: [], PushedFilters: [IsNotNull(country)], ReadSchema: struct<country:string>
+   +- FileScan parquet [rank#565,name#566,net_worth#567,bday#568,age#569,nationality#570] Batched: true, DataFilters: [], Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/home/jovyan/3_Spark_Basics/data_parquet], PartitionFilters: [isnotnull(nationality#570), (nationality#570 = Russia)], PushedFilters: [], ReadSchema: struct<rank:int,name:string,net_worth:string,bday:string,age:int>
