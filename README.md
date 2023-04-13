@@ -12,6 +12,7 @@ psql (PostgreSQL) 15.2
 * [TASK2](task2/README_task2.md)
 * [TASK3](task3/README_task3.md)
 * [TASK4](task4/README.md)
+* [TASK5](task5/README.md)
 ---
 ## Requirements
 The following requirements must be met in order to run the project:
