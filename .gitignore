@@ -21,3 +21,6 @@ __pycache__/
 
 # Data for processing
 /task2/data
+
+/task5/pgdata
+/task5/notebooks
