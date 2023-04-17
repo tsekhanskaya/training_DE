@@ -1,0 +1,33 @@
+version: '3'
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: pagila
+    volumes:
+      - ./scripts/pagila-schema.sql:/docker-entrypoint-initdb.d/1-pagila-schema.sql
+      - ./scripts/pagila-data.sql:/docker-entrypoint-initdb.d/2-pagila-data.sql
+    ports:
+      - "5439:5432"
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    environment:
+      PYSPARK_PYTHON: /opt/conda/bin/python
+      PYSPARK_DRIVER_PYTHON: /opt/conda/bin/jupyter
+      JDBC_DRIVER_PATH: /opt/conda/share/jupyter/kernels/python3/postgresql-42.2.23.jar
+      JDBC_DRIVER_CLASS: org.postgresql.Driver
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: pagila

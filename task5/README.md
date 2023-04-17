@@ -24,7 +24,5 @@
 ## Preparing
 
 ```
-cd task5
-docker build -t my-postgres-spark .
-docker run -it -p 5432:5432 my-postgres-spark
+docker-compose up
 ```
