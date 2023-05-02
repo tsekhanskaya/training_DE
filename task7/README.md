@@ -1,5 +1,15 @@
 # Task 7. Airflow introduction
 
+## Preparing
+
+```bash
+   docker compose up --build
+```
+
+## Dag: data_processing.py
+
+![image data_processing.py](img.png)
+
 ### Description
 DAG должен состоять из нескольких задач:
 
@@ -24,3 +34,5 @@ DAG должен состоять из нескольких задач:
 * Все записи, где длина поля “content” составляет менее 5 символов;
 
 * Средний рейтинг по каждому дню (результат должен быть в виде timestamp type).
+
+Результаты запросов: [answers](queries/queries.md).
