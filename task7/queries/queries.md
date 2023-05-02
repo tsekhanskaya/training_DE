@@ -31,6 +31,9 @@ db.tiktok_google_play_reviews.aggregate([
 ### Description
 Display all records where the length of the "content" field is less than 5 characters.
 
+```
+db.tiktok_google_play_reviews.find({ $and: [{ content: { $type: "string" } }, { $expr: { $lt: [{ $strLenCP: "$content" }, 5] } }] })
+```
 ![img2.png](img2.png)
 
 ## Query 3
