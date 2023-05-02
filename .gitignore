@@ -24,3 +24,7 @@ __pycache__/
 
 /task5/pgdata
 /task5/notebooks
+
+/task7/logs
+/task7/plugins
+/task7/mongoDataBase
