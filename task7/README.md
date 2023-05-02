@@ -2,11 +2,24 @@
 
 ## Preparing
 
-```bash
-   docker compose up --build
+Add .env with your environment variables :
+
+```
+AIRFLOW_UID=1000
+MONGODB_HOST=
+MONGODB_PORT=
+MONGODB_DATABASE=
+MONGODB_USER=
+MONGODB_PASSWORD=
 ```
 
-## Dag: data_processing.py
+```bash
+docker compose up --build
+```
+
+## Dag
+
+[data_processing.py](dags/data_processing.py)
 
 ![image data_processing.py](img.png)
 
