@@ -1,0 +1,14 @@
+{
+  "AIRFLOW_UID": 1000,
+  "AIRFLOW_HOME": "",
+  "RAW_DATA_FILE": "",
+  "OUTPUT_FILE": "",
+  "DATA_PATH": "",
+  "DDL_PATH": "",
+  "DML_PATH": "",
+
+  "SNOWFLAKE_CONN_ID": "snowflake_default",
+  "SNOWFLAKE_SCHEMA": "",
+  "SNOWFLAKE_DATABASE": "",
+  "SNOWFLAKE_ROLE": ""
+}

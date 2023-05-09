@@ -30,3 +30,7 @@ __pycache__/
 /task7/mongoDataBase
 
 /task8/data
+/task8/airflow.cfg
+/task8/standalone_admin_password.txt
+/task8/webserver_config.py
+/task8/logs
