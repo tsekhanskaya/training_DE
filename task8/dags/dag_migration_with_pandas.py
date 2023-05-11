@@ -1,12 +1,13 @@
-import os
-import sys
 import pandas as pd
 
 from airflow.models import Variable
-from datetime import datetime, timedelta
-from airflow.decorators import dag, task_group, task
+from datetime import datetime
+from airflow.decorators import dag, task
 from airflow.utils.task_group import TaskGroup
 from airflow.providers.snowflake.operators.snowflake import SnowflakeOperator
+from airflow.providers.snowflake.hooks.snowflake import SnowflakeHook
+from snowflake.connector.pandas_tools import write_pandas
+
 
 AIRFLOW_HOME = Variable.get("AIRFLOW_HOME")
 RAW_DATA_FILE = Variable.get("RAW_DATA_FILE")
@@ -29,7 +30,7 @@ default_args = {
 
 
 @dag(start_date=datetime(2023, 5, 4), schedule="@once", default_args=default_args)
-def dag_data_migration():
+def dag_data_migration_pandas():
     def query_string(filename: str) -> str:
         if filename.lower().startswith("create"):
             file_path = f"{DDL_PATH}/{filename}"
@@ -71,19 +72,12 @@ def dag_data_migration():
 
     with TaskGroup(group_id='migration') as migration:
         @task
-        def csv_delete_indexes():
+        def to_raw_table():
             df = pd.read_csv(f"{DATA_PATH}/{RAW_DATA_FILE}", index_col=False)
-            df.to_csv(f"{DATA_PATH}/{OUTPUT_FILE}", index=False, sep=';')
-
-        csv_to_stage = SnowflakeOperator(
-            task_id="csv_to_stage",
-            sql=f"PUT file://{DATA_PATH}/{OUTPUT_FILE} @%RAW_TABLE OVERWRITE = TRUE;"
-        )
-
-        to_raw_table = SnowflakeOperator(
-            task_id="to_raw_table",
-            sql=f"COPY INTO RAW_TABLE FROM @%RAW_TABLE/data_without_indexes.csv.gz FILE_FORMAT = (TYPE = CSV COMPRESSION=GZIP SKIP_HEADER=1 FIELD_DELIMITER=';') ON_ERROR = CONTINUE;"
-        )
+            df.columns = df.columns.str.upper()
+            dwh_hook = SnowflakeHook(snowflake_conn_id=SNOWFLAKE_CONN_ID)
+            conn = dwh_hook.get_conn()
+            write_pandas(conn, df, 'RAW_TABLE')
 
         to_stage_table = SnowflakeOperator(
             task_id="to_stage_table",
@@ -95,9 +89,9 @@ def dag_data_migration():
             sql=query_string("insert_to_master_table.sql"),
         )
 
-        csv_delete_indexes() >> csv_to_stage >> to_raw_table >> to_stage_table >> to_master_table
+        to_raw_table() >> to_stage_table >> to_master_table
 
     preparing >> migration
 
 
-dag_data_migration()
+dag_data_migration_pandas()
