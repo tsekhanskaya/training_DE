@@ -8,17 +8,29 @@ Build an ELT pipeline based on Snowflake using Airflow (local). The overall desi
 
 ## Result
 
-Dag_data_migration consist of:
+1. [Dag_migration_with_pandas](dags%2Fdag_migration_with_pandas.py) consist of:
 
-![img.png](images/img.png)
+![img.png](images%2Fimg.png)
 
-The structure in the Data warehouse:  
+The structure database is:  
 
-![img_2.png](images/img_2.png)
+![img_2.png](images%2Fimg_2.png)
 
 IOS_APPS/PUBLIC/MASTER_TABLE:
 
-![img_3.png](images/img_3.png)
+![img_4.png](images%2Fimg_4.png)
+   
+2. [Dag_migration_with_csv](dags%2Fdag_migration_with_csv.py)
+
+![img_5.png](images%2Fimg_5.png)
+   
+The structure database is:
+
+![img_1.png](images%2Fimg_1.png)
+
+IOS_APPS/PUBLIC/MASTER_TABLE:
+
+![img_3.png](images%2Fimg_3.png)
 
 ## Preparing
 
@@ -88,4 +100,4 @@ Role: YOUR_ROLE
 
 Upload ```config.json``` with your values.
 
-![img_1.png](images/img_1.png)
+![img_8.png](images%2Fimg_8.png)
