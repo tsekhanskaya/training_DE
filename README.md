@@ -16,6 +16,7 @@ psql (PostgreSQL) 15.2
 * [Task 6. Airflow Demo Course](task6/README.md)
 * [Task 7. Airflow introduction](task7/README.md)
 * [Task 8. Snowflake](task8/README.md)
+* [Task 9. Alert project](task9/README.md)
 ---
 ## Requirements
 The following requirements must be met in order to run the project:
