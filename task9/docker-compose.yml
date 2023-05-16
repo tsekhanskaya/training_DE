@@ -1,0 +1,12 @@
+version: '3'
+services:
+  monitoring_logs:
+    environment:
+      SENDER_EMAIL: ${SENDER_EMAIL}
+      SENDER_PASSWORD: ${SENDER_PASSWORD}
+      RECEIVER_EMAIL: ${RECEIVER_EMAIL}
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    volumes:
+      - ./app/data:/app/data
