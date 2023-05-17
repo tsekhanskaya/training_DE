@@ -8,9 +8,9 @@ psql (PostgreSQL) 15.2
 
 Сontains the following tasks:
 
-* [Task 1. Python introduction](task1/README_task1.md)
-* [Task 2. Pandas/NumPy](task2/README_task2.md)
-* [Task 3. SQL queries](task3/README_task3.md)
+* [Task 1. Python introduction](task1/README.md)
+* [Task 2. Pandas/NumPy](task2/README.md)
+* [Task 3. SQL queries](task3/README.md)
 * [Task 4. Spark Demo Course](task4/README.md)
 * [Task 5. Spark framework Course](task5/README.md)
 * [Task 6. Airflow Demo Course](task6/README.md)

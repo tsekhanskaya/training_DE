@@ -1,4 +1,4 @@
-# Pandas and Numpy tasks
+# Task 2. Pandas/NumPy
 
 A Jupyter notebook lets you write and execute Python code locally in your web browser. 
 

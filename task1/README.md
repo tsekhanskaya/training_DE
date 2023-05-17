@@ -1,4 +1,4 @@
-# Task 1
+# Task 1. Python introduction
 This is a console application and is designed to manage the assignment of students to rooms in a training facility. The project is written in Python.
 ```
 Python 3.8.10
