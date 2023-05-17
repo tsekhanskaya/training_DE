@@ -5,10 +5,7 @@ import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from scripts.logger import logger
-
-
-DIRECTORY_TO_WATCH = f"./data"
-SCRIPT_TO_EXECUTE = f"./scripts/log_processor.py"
+from scripts.settings import DIRECTORY_TO_WATCH, SCRIPT_TO_EXECUTE
 
 
 def run_script_on_new_csv(directory: str, script_path: str) -> None:

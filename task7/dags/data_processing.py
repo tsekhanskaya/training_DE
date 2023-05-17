@@ -8,11 +8,8 @@ from airflow.sensors.filesystem import FileSensor
 from airflow.utils.task_group import TaskGroup
 from airflow.decorators import task
 from airflow.providers.mongo.hooks.mongo import MongoHook
+from settings import FILENAME, DATA_PATH
 
-
-AIRFLOW_HOME = "/opt/airflow"
-FILENAME = "tiktok_google_play_reviews.csv"
-DATA_PATH = f"{AIRFLOW_HOME}/data"
 
 default_args = {
     'owner': 'airflow',
